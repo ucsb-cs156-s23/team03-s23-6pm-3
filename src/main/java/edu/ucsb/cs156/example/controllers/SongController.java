@@ -60,7 +60,7 @@ public class SongController extends ApiController {
     public Song postSong(
             @ApiParam("title") @RequestParam String title,
             @ApiParam("artist") @RequestParam String artist,
-            @ApiParam("album") @RequestParam String album,
+            @ApiParam("album") @RequestParam String album
             )
             throws JsonProcessingException {
 
