@@ -107,7 +107,7 @@ describe("SongEditPage tests", () => {
         });
 
         await waitFor(() => expect(mockUpdate).toHaveBeenCalled());
-        await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/songs"));
+        await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/songs/list"));
 
         // assert - check that the console.log was called with the expected message
         expect(console.log).toHaveBeenCalled();

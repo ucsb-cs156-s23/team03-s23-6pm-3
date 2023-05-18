@@ -61,7 +61,6 @@ public class SongController extends ApiController {
             @ApiParam("title") @RequestParam String title,
             @ApiParam("artist") @RequestParam String artist,
             @ApiParam("album") @RequestParam String album,
-            @ApiParam("duration") @RequestParam Double duration
             )
             throws JsonProcessingException {
 
@@ -69,7 +68,6 @@ public class SongController extends ApiController {
         song.setTitle(title);
         song.setArtist(artist);
         song.setAlbum(album);
-        song.setDuration(duration);
 
         Song savedSong = songRepository.save(song);
 
@@ -101,7 +99,6 @@ public class SongController extends ApiController {
         song.setTitle(incoming.getTitle());
         song.setArtist(incoming.getArtist());
         song.setAlbum(incoming.getAlbum());
-        song.setDuration(incoming.getDuration());
 
         songRepository.save(song);
 

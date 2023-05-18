@@ -88,7 +88,6 @@ public class SongControllerTests extends ControllerTestCase {
                                 .title("Africa")
                                 .artist("Toto")
                                 .album("africa's toto")
-                                .duration(4.5d)
                                 .build();
 
                 when(songRepository.findById(eq(7L))).thenReturn(Optional.of(song));
@@ -134,14 +133,12 @@ public class SongControllerTests extends ControllerTestCase {
                                 .title("Africa")
                                 .artist("Toto")
                                 .album("africa's toto")
-                                .duration(4.5d)
                                 .build();
 
                 Song song2 = Song.builder()
                                 .title("Pride")
                                 .artist("Kendrick")
                                 .album("DAMN.")
-                                .duration(3.2d)
                                 .build();
 
                 ArrayList<Song> expectedDates = new ArrayList<>();
@@ -169,7 +166,6 @@ public class SongControllerTests extends ControllerTestCase {
                                 .title("Africa")
                                 .artist("Toto")
                                 .album("africastoto")
-                                .duration(4.5d)
                                 .build();
 
                 when(songRepository.save(eq(song1))).thenReturn(song1);
@@ -195,7 +191,6 @@ public class SongControllerTests extends ControllerTestCase {
                                 .title("Africa")
                                 .artist("Toto")
                                 .album("africastoto")
-                                .duration(4.5d)
                                 .build();
 
                 when(songRepository.findById(eq(15L))).thenReturn(Optional.of(song1));
@@ -242,14 +237,12 @@ public class SongControllerTests extends ControllerTestCase {
                                 .title("Africa")
                                 .artist("Toto")
                                 .album("africastoto")
-                                .duration(4.5d)
                                 .build();
 
                 Song songEdited = Song.builder()
                                 .title("Asia")
                                 .artist("Totoro")
                                 .album("Asiatotoro")
-                                .duration(4.2d)
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(songEdited);
@@ -281,7 +274,6 @@ public class SongControllerTests extends ControllerTestCase {
                                 .title("Asia")
                                 .artist("Totoro")
                                 .album("Asiatotoro")
-                                .duration(4.2d)
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(songEdited);
