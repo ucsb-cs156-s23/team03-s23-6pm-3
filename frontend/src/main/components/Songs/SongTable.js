@@ -1,33 +1,27 @@
 import React from "react";
 import OurTable, { ButtonColumn } from "main/components/OurTable";
+import { useBackendMutation } from "main/utils/useBackend";
+import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/UCSBDateUtils"
 import { useNavigate } from "react-router-dom";
-import { songUtils } from "main/utils/songUtils";
+import { hasRole } from "main/utils/currentUser";
 
-const showCell = (cell) => JSON.stringify(cell.row.values);
-
-
-const defaultDeleteCallback = async (cell) => {
-    console.log(`deleteCallback: ${showCell(cell)})`);
-    songUtils.del(cell.row.values.id);
-}
-
-export default function SongTable({
-    songs,
-    deleteCallback = defaultDeleteCallback,
-    showButtons = true,
-    testIdPrefix = "SongTable" }) {
-
+export default function SongTable({ songs, currentUser }){
     const navigate = useNavigate();
  
     const editCallback = (cell) => {
-        console.log(`editCallback: ${showCell(cell)})`);
         navigate(`/songs/edit/${cell.row.values.id}`)
     }
 
-    const detailsCallback = (cell) => {
-        console.log(`detailsCallback: ${showCell(cell)})`);
-        navigate(`/songs/details/${cell.row.values.id}`)
-    }
+    // Stryker disable all : hard to test for query caching
+
+    const deleteMutation = useBackendMutation(
+        cellToAxiosParamsDelete,
+        { onSuccess: onDeleteSuccess },
+        ["/api/songs/all"]
+    );
+    // Stryker enable all 
+
+    const deleteCallback = async (cell) => { deleteMutation.mutate(cell); }
 
     const columns = [
         {
@@ -49,19 +43,18 @@ export default function SongTable({
         }
     ];
 
-    const buttonColumns = [
-        ...columns,
-        ButtonColumn("Details", "primary", detailsCallback, testIdPrefix),
-        ButtonColumn("Edit", "primary", editCallback, testIdPrefix),
-        ButtonColumn("Delete", "danger", deleteCallback, testIdPrefix),
-    ]
+    if (hasRole(currentUser, "ROLE_ADMIN")) {
+        columns.push(ButtonColumn("Edit", "primary", editCallback, "SongTable"));
+        columns.push(ButtonColumn("Delete", "danger", deleteCallback, "SongTable"));
+    } 
 
-    const columnsToDisplay = showButtons ? buttonColumns : columns;
+    const memoizedColumns = React.useMemo(() => columns, [columns]);
+    const memoizedSongs = React.useMemo(() => dates, [dates]);
 
     return <OurTable
-        data={songs}
-        columns={columnsToDisplay}
-        testid={testIdPrefix}
+        data={memoizedSongs}
+        columns={memoizedColumns}
+        testid={"SongsTable"}
     />;
 };
 
