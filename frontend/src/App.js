@@ -11,6 +11,11 @@ import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
 import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
 import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
 
+import SongIndexPage from "main/pages/Songs/SongIndexPage";
+import SongCreatePage from "main/pages/Songs/SongCreatePage";
+import SongEditPage from "main/pages/Songs/SongEditPage";
+import SongDetailsPage from "main/pages/Songs/SongDetailsPage";
+
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
@@ -51,6 +56,23 @@ function App() {
             <>
               <Route exact path="/ucsbdates/edit/:id" element={<UCSBDatesEditPage />} />
               <Route exact path="/ucsbdates/create" element={<UCSBDatesCreatePage />} />
+            </>
+          )
+        }
+
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/songs/list" element={<SongIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && (
+            <>
+              <Route exact path="/songs/edit/:id" element={<SongEditPage />} />
+              <Route exact path="/songs/create" element={<SongCreatePage />} />
+              <Route exact path="/songs/details/:id" element={<SongDetailsPage />} />
             </>
           )
         }

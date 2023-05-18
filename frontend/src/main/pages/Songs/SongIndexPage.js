@@ -17,7 +17,7 @@ export default function SongIndexPage() {
     const deleteCallback = async (cell) => {
         console.log(`SongIndexPage deleteCallback: ${showCell(cell)})`);
         songUtils.del(cell.row.values.id);
-        navigate("/songs");
+        navigate("/songs/list");
     }
 
     return (

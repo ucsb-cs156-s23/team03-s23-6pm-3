@@ -10,7 +10,7 @@ export default function SongCreatePage() {
   const onSubmit = async (song) => {
     const createdSong = songUtils.add(song);
     console.log("createdSong: " + JSON.stringify(createdSong));
-    navigate("/songs");
+    navigate("/songs/list");
   }  
 
   return (

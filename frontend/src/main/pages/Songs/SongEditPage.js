@@ -16,7 +16,7 @@ export default function SongEditPage() {
     const onSubmit = async (song) => {
         const updatedSong = songUtils.update(song);
         console.log("updatedSong: " + JSON.stringify(updatedSong));
-        navigate("/songs");
+        navigate("/songs/list");
     }  
 
     return (
