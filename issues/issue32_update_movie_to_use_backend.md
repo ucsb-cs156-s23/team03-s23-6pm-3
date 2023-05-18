@@ -1,8 +1,8 @@
-Change 2nd Model frontend to use Java backend
+Change movie frontend to use Java backend
 
 # Acceptance Criteria:
 
-All of the following refer to the frontend for the 2nd Model from team01.
+All of the following refer to the frontend for the movie from team01.
 
 You may want to search and replace `Movie` with the name you used for your pages in team01.
 

@@ -1,8 +1,8 @@
-Change 3rd model frontend to use Java backend
+Change song frontend to use Java backend
 
 # Acceptance Criteria:
 
-All of the following refer to the frontend for the 3rd Model from team01.
+All of the following refer to the frontend for the song from team01.
 
 You may want to search and replace `Song` with the name you used for your pages in team01.
 
