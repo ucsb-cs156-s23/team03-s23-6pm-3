@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/Songs/SongForm.js</title>
+    <title>Code coverage report for components/Movies/MovieForm.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Songs</a> SongForm.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Movies</a> MovieForm.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -173,29 +173,28 @@
 <a name='L108'></a><a href='#L108'>108</a>
 <a name='L109'></a><a href='#L109'>109</a>
 <a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L111'></a><a href='#L111'>111</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -273,8 +272,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -289,24 +287,23 @@
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
+function <span class="fstat-no" title="function not covered" >MovieForm(</span>{ initialContents, submitAction, buttonLabel = <span class="branch-0 cbranch-no" title="branch not covered" >"Create" </span>}) {
 &nbsp;
-function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
-&nbsp;
-    const navigate = useNavigate();
+    const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
     
     // Stryker disable all
     const {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm(
+    } = <span class="cstat-no" title="statement not covered" >useForm(</span>
         { defaultValues: initialContents || {}, }
     );
     // Stryker enable all
    
-    const testIdPrefix = "SongForm";
+    const testIdPrefix = <span class="cstat-no" title="statement not covered" >"MovieForm";</span>
 &nbsp;
-    return (
+<span class="cstat-no" title="statement not covered" >    return (</span>
 &nbsp;
         &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
 &nbsp;
@@ -325,14 +322,14 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
             )}
 &nbsp;
             &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="title"&gt;Title&lt;/Form.Label&gt;
+                &lt;Form.Label htmlFor="name"&gt;Name&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-title"}
-                    id="title"
+                    data-testid={testIdPrefix + "-name"}
+                    id="name"
                     type="text"
-                    isInvalid={Boolean(errors.title)}
-                    {...register("title", {
-                        required: "Title is required.",
+                    isInvalid={Boolean(errors.name)}
+                    {...register("name", {
+                        required: "Name is required.",
                         maxLength : {
                             value: 30,
                             message: "Max length 30 characters"
@@ -340,39 +337,39 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.title?.message}
+                    {errors.name?.message}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
             &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="artist"&gt;Artist&lt;/Form.Label&gt;
+                &lt;Form.Label htmlFor="starring"&gt;Starring&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-artist"}
-                    id="artist"
+                    data-testid={testIdPrefix + "-starring"}
+                    id="starring"
                     type="text"
-                    isInvalid={Boolean(errors.artist)}
-                    {...register("artist", {
-                        required: "Artist is required."
+                    isInvalid={Boolean(errors.starring)}
+                    {...register("starring", {
+                        required: "Starring is required."
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.artist?.message}
+                    {errors.starring?.message}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
             &lt;Form.Group className="mb-3" &gt;
-                &lt;Form.Label htmlFor="album"&gt;Album&lt;/Form.Label&gt;
+                &lt;Form.Label htmlFor="director"&gt;Director&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-album"}
-                    id="album"
+                    data-testid={testIdPrefix + "-director"}
+                    id="director"
                     type="text"
-                    isInvalid={Boolean(errors.album)}
-                    {...register("album", {
-                        //required: "Album is required."
+                    isInvalid={Boolean(errors.director)}
+                    {...register("director", {
+                        //required: "Director is required."
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.album?.message}
+                    {errors.director?.message}
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
@@ -385,7 +382,7 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
             &lt;/Button&gt;
             &lt;Button
                 variant="Secondary"
-                onClick={() =&gt; navigate(-1)}
+                onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigate(-1)}</span>
                 data-testid={testIdPrefix + "-cancel"}
             &gt;
                 Cancel
@@ -396,14 +393,14 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
     )
 }
 &nbsp;
-export default SongForm;</pre></td></tr></table></pre>
+export default MovieForm;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu May 18 2023 15:06:13 GMT-0700 (Pacific Daylight Time)
+                at Thu May 18 2023 15:12:23 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for pages/Songs/SongEditPage.js</title>
+    <title>Code coverage report for pages/Movies/MovieEditPage.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/Songs</a> SongEditPage.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/Movies</a> MovieEditPage.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,19 +101,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -124,29 +124,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
-import { songUtils }  from 'main/utils/songUtils';
-import SongForm from 'main/components/Songs/SongForm';
+import { movieUtils }  from 'main/utils/movieUtils';
+import MovieForm from 'main/components/Movies/MovieForm';
 import { useNavigate } from 'react-router-dom'
 &nbsp;
 &nbsp;
-export default function SongEditPage() {
-    let { id } = useParams();
+export default function <span class="fstat-no" title="function not covered" >MovieEditPage(</span>) {
+    let { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
 &nbsp;
-    let navigate = useNavigate(); 
+    let navigate = <span class="cstat-no" title="statement not covered" >useNavigate(); </span>
 &nbsp;
-    const response = songUtils.getById(id);
+    const response = <span class="cstat-no" title="statement not covered" >movieUtils.getById(id);</span>
 &nbsp;
-    const onSubmit = async (song) =&gt; {
-        const updatedSong = songUtils.update(song);
-        console.log("updatedSong: " + JSON.stringify(updatedSong));
-        navigate("/songs/list");
+    const onSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (movie) =&gt; {</span>
+        const updatedMovie = <span class="cstat-no" title="statement not covered" >movieUtils.update(movie);</span>
+<span class="cstat-no" title="statement not covered" >        console.log("updatedMovie: " + JSON.stringify(updatedMovie));</span>
+<span class="cstat-no" title="statement not covered" >        navigate("/movies");</span>
     }  
 &nbsp;
-    return (
+<span class="cstat-no" title="statement not covered" >    return (</span>
         &lt;BasicLayout&gt;
             &lt;div className="pt-2"&gt;
-                &lt;h1&gt;Edit Song&lt;/h1&gt;
-                &lt;SongForm submitAction={onSubmit} buttonLabel={"Update"} initialContents={response.song}/&gt;
+                &lt;h1&gt;Edit Movie&lt;/h1&gt;
+                &lt;MovieForm submitAction={onSubmit} buttonLabel={"Update"} initialContents={response.movie}/&gt;
             &lt;/div&gt;
         &lt;/BasicLayout&gt;
     )
@@ -157,7 +157,7 @@ export default function SongEditPage() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu May 18 2023 15:06:13 GMT-0700 (Pacific Daylight Time)
+                at Thu May 18 2023 15:12:23 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
