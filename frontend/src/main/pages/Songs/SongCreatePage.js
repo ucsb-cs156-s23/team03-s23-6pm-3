@@ -1,17 +1,42 @@
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import SongForm from "main/components/Songs/SongForm";
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { songUtils } from 'main/utils/songUtils';
+import { toast } from "react-toastify";
 
 export default function SongCreatePage() {
 
-  let navigate = useNavigate(); 
+  const objectToAxiosParams = (song) => ({
+    url: "/api/song/post",
+    method: "POST",
+    params: {
+      id: Song.id,
+      title: Song.title,
+      artist: Song.localDateTime,
+      album: Song.album
+    }
+  });
+
+  const onSuccess = (song) => {
+    toast(`New song Created - id: ${Song.id} title: ${Song.name}`);
+  }
+  
+   const mutation = useBackendMutation(
+    objectToAxiosParams,
+     { onSuccess }, 
+     // Stryker disable next-line all : hard to set up test for caching
+     ["/api/songs/all"]
+     );
+
+  const { isSuccess } = mutation
 
   const onSubmit = async (song) => {
-    const createdSong = songUtils.add(song);
-    console.log("createdSong: " + JSON.stringify(createdSong));
-    navigate("/songs");
+    mutation.mutate(song);
   }  
+  
+  if (isSuccess) { 
+    return <Navigate to="/songs/list" />
+  }
 
   return (
     <BasicLayout>
