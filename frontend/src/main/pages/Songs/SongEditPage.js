@@ -1,29 +1,66 @@
 
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
-import { songUtils }  from 'main/utils/songUtils';
 import SongForm from 'main/components/Songs/SongForm';
-import { useNavigate } from 'react-router-dom'
-
+import { Navigate } from 'react-router-dom'
+import {useBackend, useBackendMutation } from "main/utils/useBackend";
+import {toast} from "react-toastify";
 
 export default function SongEditPage() {
-    let { id } = useParams();
+    let { id } = useParams(); 
 
-    let navigate = useNavigate(); 
+    const { data: song, error, status } =
+    useBackend(
+      // Stryker disable next-line all : don't test internal caching of React Query
+      [`/api/songs?id=${id}`],
+      {  // Stryker disable next-line all : GET is the default, so changing this to "" doesn't introduce a bug
+        method: "GET",
+        url: `/api/songs`,
+        params: {
+          id
+        }
+      }
+    );
+    
+    const objectToAxiosPutParams = (song) => ({
+    url: "/api/songs",
+    method: "PUT",
+    params: {
+      id: ucsbDate.id,
+    },
+    data: {
+      title: song.title,
+      artist: song.artist,
+      album: song.album
+    }
+  });
 
-    const response = songUtils.getById(id);
+  const onSuccess = (song) => {
+    toast(`Song Updated - id: ${song.id} title: ${song.title}`);
+  }
+
+  const mutation = useBackendMutation(
+    objectToAxiosPutParams,
+    { onSuccess },
+    // Stryker disable next-line all : hard to set up test for caching
+    [`/api/songs?id=${id}`]
+  );
+    
+    const { isSuccess } = mutation
 
     const onSubmit = async (song) => {
-        const updatedSong = songUtils.update(song);
-        console.log("updatedSong: " + JSON.stringify(updatedSong));
-        navigate("/songs");
+        mutation.mutate(data);
     }  
+    
+    if(isSuccess) { 
+        return <Navigate to="/songs/list" />
+    }
 
     return (
         <BasicLayout>
             <div className="pt-2">
                 <h1>Edit Song</h1>
-                <SongForm submitAction={onSubmit} buttonLabel={"Update"} initialContents={response.song}/>
+                {song &&SongForm initialSong={song} submitAction={onSubmit} buttonLabel="Update" />
             </div>
         </BasicLayout>
     )
