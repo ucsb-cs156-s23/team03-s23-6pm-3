@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import RestaurantDetailsPage from "main/pages/Restaurants/RestaurantDetailsPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
+
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
@@ -24,8 +25,9 @@ jest.mock("main/utils/restaurantUtils", () => {
                 return {
                     restaurant: {
                         id: 3,
-                        name: "Freebirds",
-                        description: "Burritos",
+                        name: "Name3",
+                        description: "Description3",
+                        location: "Location3",
                     },
                 };
             },
@@ -61,8 +63,9 @@ describe("RestaurantDetailsPage tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-        expect(screen.getByText("Freebirds")).toBeInTheDocument();
-        expect(screen.getByText("Burritos")).toBeInTheDocument();
+        expect(screen.getByText("Name3")).toBeInTheDocument();
+        expect(screen.getByText("Description3")).toBeInTheDocument();
+        expect(screen.getByText("Location3")).toBeInTheDocument();
 
         expect(screen.queryByText("Delete")).not.toBeInTheDocument();
         expect(screen.queryByText("Edit")).not.toBeInTheDocument();

@@ -1,12 +1,11 @@
-import React from 'react'
-import Button from 'react-bootstrap/Button';
+import React from "react";
+import Button from "react-bootstrap/Button";
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import RestaurantTable from 'main/components/Restaurants/RestaurantTable';
-import { restaurantUtils } from 'main/utils/restaurantUtils';
-import { useNavigate, Link } from 'react-router-dom';
+import RestaurantTable from "main/components/Restaurants/RestaurantTable";
+import { restaurantUtils } from "main/utils/restaurantUtils";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function RestaurantIndexPage() {
-
     const navigate = useNavigate();
 
     const restaurantCollection = restaurantUtils.get();
@@ -17,18 +16,25 @@ export default function RestaurantIndexPage() {
     const deleteCallback = async (cell) => {
         console.log(`RestaurantIndexPage deleteCallback: ${showCell(cell)})`);
         restaurantUtils.del(cell.row.values.id);
-        navigate("/restaurants");
-    }
+        navigate("/restaurants/list");
+    };
 
     return (
         <BasicLayout>
             <div className="pt-2">
-                <Button style={{ float: "right" }} as={Link} to="/restaurants/create">
+                <Button
+                    style={{ float: "right" }}
+                    as={Link}
+                    to="/restaurants/create"
+                >
                     Create Restaurant
                 </Button>
                 <h1>Restaurants</h1>
-                <RestaurantTable restaurants={restaurants} deleteCallback={deleteCallback} />
+                <RestaurantTable
+                    restaurants={restaurants}
+                    deleteCallback={deleteCallback}
+                />
             </div>
         </BasicLayout>
-    )
+    );
 }

@@ -3,6 +3,7 @@ import RestaurantIndexPage from "main/pages/Restaurants/RestaurantIndexPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import mockConsole from "jest-mock-console";
+
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
@@ -28,13 +29,9 @@ jest.mock("main/utils/restaurantUtils", () => {
                     restaurants: [
                         {
                             id: 3,
-                            name: "Freebirds",
-                            address: "879 Embarcadero del Norte",
-                            city: "Isla Vista",
-                            state: "CA",
-                            zip: "93117",
-                            description:
-                                "Burrito joint, and iconic Isla Vista location",
+                            name: "Name3",
+                            description: "Description3",
+                            location: "Location3",
                         },
                     ],
                 };
@@ -79,13 +76,14 @@ describe("RestaurantIndexPage tests", () => {
             "float: right;"
         );
 
-        const name = screen.getByText("Freebirds");
+        const name = screen.getByText("Name3");
         expect(name).toBeInTheDocument();
 
-        const description = screen.getByText(
-            "Burrito joint, and iconic Isla Vista location"
-        );
+        const description = screen.getByText("Description3");
         expect(description).toBeInTheDocument();
+
+        const location = screen.getByText("Location3");
+        expect(location).toBeInTheDocument();
 
         expect(
             screen.getByTestId("RestaurantTable-cell-row-0-col-Delete-button")
@@ -109,13 +107,14 @@ describe("RestaurantIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        const name = screen.getByText("Freebirds");
+        const name = screen.getByText("Name3");
         expect(name).toBeInTheDocument();
 
-        const description = screen.getByText(
-            "Burrito joint, and iconic Isla Vista location"
-        );
+        const description = screen.getByText("Description3");
         expect(description).toBeInTheDocument();
+
+        const location = screen.getByText("Location3");
+        expect(location).toBeInTheDocument();
 
         const deleteButton = screen.getByTestId(
             "RestaurantTable-cell-row-0-col-Delete-button"
@@ -128,13 +127,13 @@ describe("RestaurantIndexPage tests", () => {
         expect(mockDelete).toHaveBeenCalledWith(3);
 
         await waitFor(() =>
-            expect(mockNavigate).toHaveBeenCalledWith("/restaurants")
+            expect(mockNavigate).toHaveBeenCalledWith("/restaurants/list")
         );
 
         // assert - check that the console.log was called with the expected message
         expect(console.log).toHaveBeenCalled();
         const message = console.log.mock.calls[0][0];
-        const expectedMessage = `RestaurantIndexPage deleteCallback: {"id":3,"name":"Freebirds","description":"Burrito joint, and iconic Isla Vista location"}`;
+        const expectedMessage = `RestaurantIndexPage deleteCallback: {"id":3,"name":"Name3","description":"Description3","location":"Location3"}`;
         expect(message).toMatch(expectedMessage);
         restoreConsole();
     });

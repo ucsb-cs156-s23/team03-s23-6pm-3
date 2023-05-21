@@ -9,6 +9,7 @@ import RestaurantEditPage from "main/pages/Restaurants/RestaurantEditPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import mockConsole from "jest-mock-console";
+
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
@@ -36,8 +37,9 @@ jest.mock("main/utils/restaurantUtils", () => {
                 return {
                     restaurant: {
                         id: 3,
-                        name: "Freebirds",
-                        description: "Burritos",
+                        name: "Name3",
+                        description: "Description3",
+                        location: "Location3",
                     },
                 };
             },
@@ -76,8 +78,9 @@ describe("RestaurantEditPage tests", () => {
         );
 
         expect(screen.getByTestId("RestaurantForm-name")).toBeInTheDocument();
-        expect(screen.getByDisplayValue("Freebirds")).toBeInTheDocument();
-        expect(screen.getByDisplayValue("Burritos")).toBeInTheDocument();
+        expect(screen.getByDisplayValue("Name3")).toBeInTheDocument();
+        expect(screen.getByDisplayValue("Description3")).toBeInTheDocument();
+        expect(screen.getByDisplayValue("Location3")).toBeInTheDocument();
     });
 
     test("redirects to /restaurants on submit", async () => {
@@ -86,8 +89,9 @@ describe("RestaurantEditPage tests", () => {
         mockUpdate.mockReturnValue({
             restaurant: {
                 id: 3,
-                name: "South Coast Deli (Goleta)",
-                description: "Sandwiches, Salads and more",
+                name: "Name3Edit",
+                description: "Description3Edit",
+                location: "location3edit",
             },
         });
 
@@ -105,28 +109,32 @@ describe("RestaurantEditPage tests", () => {
         const descriptionInput = screen.getByLabelText("Description");
         expect(descriptionInput).toBeInTheDocument();
 
+        const locationInput = screen.getByLabelText("Location");
+        expect(locationInput).toBeInTheDocument();
+
         const updateButton = screen.getByText("Update");
         expect(updateButton).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(nameInput, {
-                target: { value: "South Coast Deli (Goleta)" },
-            });
+            fireEvent.change(nameInput, { target: { value: "Name3Edit" } });
             fireEvent.change(descriptionInput, {
-                target: { value: "Sandwiches, Salads and more" },
+                target: { value: "Description3Edit" },
+            });
+            fireEvent.change(locationInput, {
+                target: { value: "location3edit" },
             });
             fireEvent.click(updateButton);
         });
 
         await waitFor(() => expect(mockUpdate).toHaveBeenCalled());
         await waitFor(() =>
-            expect(mockNavigate).toHaveBeenCalledWith("/restaurants")
+            expect(mockNavigate).toHaveBeenCalledWith("/restaurants/list")
         );
 
         // assert - check that the console.log was called with the expected message
         expect(console.log).toHaveBeenCalled();
         const message = console.log.mock.calls[0][0];
-        const expectedMessage = `updatedRestaurant: {"restaurant":{"id":3,"name":"South Coast Deli (Goleta)","description":"Sandwiches, Salads and more"}`;
+        const expectedMessage = `updatedRestaurant: {"restaurant":{"id":3,"name":"Name3Edit","description":"Description3Edit","location":"location3edit"}`;
 
         expect(message).toMatch(expectedMessage);
         restoreConsole();
