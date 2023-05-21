@@ -2,10 +2,10 @@ import React from "react";
 import { useBackend } from "main/utils/useBackend";
 
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import RestaurantsTable from "main/components/Restaurants/RestaurantTable";
+import RestaurantTable from "main/components/Restaurants/RestaurantTable";
 import { useCurrentUser } from "main/utils/currentUser";
 
-export default function RestaurantsIndexPage() {
+export default function RestaurantIndexPage() {
     const currentUser = useCurrentUser();
 
     const {
@@ -23,7 +23,7 @@ export default function RestaurantsIndexPage() {
         <BasicLayout>
             <div className="pt-2">
                 <h1>Restaurants</h1>
-                <RestaurantsTable
+                <RestaurantTable
                     restaurants={restaurants}
                     currentUser={currentUser}
                 />

@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
-export default function RestaurantsTable({ restaurants, currentUser }) {
+export default function RestaurantTable({ restaurants, currentUser }) {
     const navigate = useNavigate();
 
     const editCallback = (cell) => {
@@ -58,14 +58,14 @@ export default function RestaurantsTable({ restaurants, currentUser }) {
                 "Details",
                 "primary",
                 detailsCallback,
-                "RestaurantsTable"
+                "RestaurantTable"
             )
         );
         columns.push(
-            ButtonColumn("Edit", "primary", editCallback, "RestaurantsTable")
+            ButtonColumn("Edit", "primary", editCallback, "RestaurantTable")
         );
         columns.push(
-            ButtonColumn("Delete", "danger", deleteCallback, "RestaurantsTable")
+            ButtonColumn("Delete", "danger", deleteCallback, "RestaurantTable")
         );
     }
 
@@ -77,7 +77,7 @@ export default function RestaurantsTable({ restaurants, currentUser }) {
         <OurTable
             data={memoizedDates}
             columns={memoizedColumns}
-            testid={"RestaurantsTable"}
+            testid={"RestaurantTable"}
         />
     );
 }
