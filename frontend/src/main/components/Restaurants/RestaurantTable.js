@@ -11,9 +11,12 @@ import { hasRole } from "main/utils/currentUser";
 export default function RestaurantsTable({ restaurants, currentUser }) {
     const navigate = useNavigate();
 
-
     const editCallback = (cell) => {
         navigate(`/restaurants/edit/${cell.row.values.id}`);
+    };
+
+    const detailsCallback = (cell) => {
+        navigate(`/restaurants/details/${cell.row.values.id}`);
     };
 
     // Stryker disable all : hard to test for query caching
@@ -47,12 +50,17 @@ export default function RestaurantsTable({ restaurants, currentUser }) {
             Header: "Location",
             accessor: "location",
         },
-            Header: "Location",
-            accessor: "location",
-        },
     ];
 
     if (hasRole(currentUser, "ROLE_ADMIN")) {
+        columns.push(
+            ButtonColumn(
+                "Details",
+                "primary",
+                detailsCallback,
+                "RestaurantsTable"
+            )
+        );
         columns.push(
             ButtonColumn("Edit", "primary", editCallback, "RestaurantsTable")
         );

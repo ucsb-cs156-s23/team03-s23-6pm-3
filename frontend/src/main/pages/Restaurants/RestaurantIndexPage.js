@@ -1,33 +1,33 @@
-// import React from "react";
-// import { useBackend } from "main/utils/useBackend";
+import React from "react";
+import { useBackend } from "main/utils/useBackend";
 
-// import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-// import RestaurantTable from "main/components/Restaurant/RestaurantTable";
-// import { useCurrentUser } from "main/utils/currentUser";
+import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
+import RestaurantsTable from "main/components/Restaurants/RestaurantTable";
+import { useCurrentUser } from "main/utils/currentUser";
 
-// export default function RestaurantIndexPage() {
-//     const currentUser = useCurrentUser();
+export default function RestaurantsIndexPage() {
+    const currentUser = useCurrentUser();
 
-//     const {
-//         data: restaurants,
-//         error: _error,
-//         status: _status,
-//     } = useBackend(
-//         // Stryker disable next-line all : don't test internal caching of React Query
-//         ["/api/restaurant/all"],
-//         { method: "GET", url: "/api/restaurant/all" },
-//         []
-//     );
+    const {
+        data: restaurants,
+        error: _error,
+        status: _status,
+    } = useBackend(
+        // Stryker disable next-line all : don't test internal caching of React Query
+        ["/api/restaurants/all"],
+        { method: "GET", url: "/api/restaurants/all" },
+        []
+    );
 
-//     return (
-//         <BasicLayout>
-//             <div className="pt-2">
-//                 <h1>Restaurant</h1>
-//                 <RestaurantTable
-//                     restaurants={restaurants}
-//                     currentUser={currentUser}
-//                 />
-//             </div>
-//         </BasicLayout>
-//     );
-// }
+    return (
+        <BasicLayout>
+            <div className="pt-2">
+                <h1>Restaurants</h1>
+                <RestaurantsTable
+                    restaurants={restaurants}
+                    currentUser={currentUser}
+                />
+            </div>
+        </BasicLayout>
+    );
+}

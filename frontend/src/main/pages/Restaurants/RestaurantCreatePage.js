@@ -17,7 +17,7 @@ export default function RestaurantsCreatePage() {
 
     const onSuccess = (restaurant) => {
         toast(
-            `New restaurant Created - id: ${restaurant.id} name: ${restaurant.name}`
+            `New restaurant created - id: ${restaurant.id} name: ${restaurant.name}`
         );
     };
 

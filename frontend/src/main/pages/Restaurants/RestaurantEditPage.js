@@ -10,8 +10,8 @@ export default function RestaurantsEditPage() {
 
     const {
         data: restaurant,
-        error: error,
-        status: status,
+        error,
+        status,
     } = useBackend(
         // Stryker disable next-line all : don't test internal caching of React Query
         [`/api/restaurants?id=${id}`],
@@ -75,6 +75,4 @@ export default function RestaurantsEditPage() {
             </div>
         </BasicLayout>
     );
-    );
 }
-
