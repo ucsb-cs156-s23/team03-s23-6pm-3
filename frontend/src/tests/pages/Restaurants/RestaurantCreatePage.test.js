@@ -9,6 +9,7 @@ import RestaurantCreatePage from "main/pages/Restaurants/RestaurantCreatePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import mockConsole from "jest-mock-console";
+
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
@@ -58,8 +59,9 @@ describe("RestaurantCreatePage tests", () => {
         mockAdd.mockReturnValue({
             restaurant: {
                 id: 3,
-                name: "South Coast Deli",
-                description: "Sandwiches and Salads",
+                name: "Name3",
+                description: "Descrption3",
+                location: "Location3",
             },
         });
 
@@ -77,28 +79,30 @@ describe("RestaurantCreatePage tests", () => {
         const descriptionInput = screen.getByLabelText("Description");
         expect(descriptionInput).toBeInTheDocument();
 
+        const locationInput = screen.getByLabelText("Location");
+        expect(locationInput).toBeInTheDocument();
+
         const createButton = screen.getByText("Create");
         expect(createButton).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(nameInput, {
-                target: { value: "South Coast Deli" },
-            });
+            fireEvent.change(nameInput, { target: { value: "Name3" } });
             fireEvent.change(descriptionInput, {
-                target: { value: "Sandwiches and Salads" },
+                target: { value: "Descrption3" },
             });
+            fireEvent.change(locationInput, { target: { value: "Location3" } });
             fireEvent.click(createButton);
         });
 
         await waitFor(() => expect(mockAdd).toHaveBeenCalled());
         await waitFor(() =>
-            expect(mockNavigate).toHaveBeenCalledWith("/restaurants")
+            expect(mockNavigate).toHaveBeenCalledWith("/restaurants/list")
         );
 
         // assert - check that the console.log was called with the expected message
         expect(console.log).toHaveBeenCalled();
         const message = console.log.mock.calls[0][0];
-        const expectedMessage = `createdRestaurant: {"restaurant":{"id":3,"name":"South Coast Deli","description":"Sandwiches and Salads"}`;
+        const expectedMessage = `createdRestaurant: {"restaurant":{"id":3,"name":"Name3","description":"Descrption3","location":"Location3"}`;
 
         expect(message).toMatch(expectedMessage);
         restoreConsole();

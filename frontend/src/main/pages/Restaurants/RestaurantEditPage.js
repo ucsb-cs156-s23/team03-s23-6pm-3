@@ -75,4 +75,6 @@ export default function RestaurantsEditPage() {
             </div>
         </BasicLayout>
     );
+    );
 }
+

@@ -11,6 +11,7 @@ import { hasRole } from "main/utils/currentUser";
 export default function RestaurantsTable({ restaurants, currentUser }) {
     const navigate = useNavigate();
 
+
     const editCallback = (cell) => {
         navigate(`/restaurants/edit/${cell.row.values.id}`);
     };
@@ -43,6 +44,9 @@ export default function RestaurantsTable({ restaurants, currentUser }) {
             accessor: "description",
         },
         {
+            Header: "Location",
+            accessor: "location",
+        },
             Header: "Location",
             accessor: "location",
         },
