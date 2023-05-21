@@ -158,20 +158,7 @@
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
 <a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a>
-<a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,19 +175,11 @@
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -273,32 +252,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import { Button, Form } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react'
+import { Button, Form } from 'react-bootstrap';
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom';
 &nbsp;
-function RestaurantForm({
-    initialContents,
-    submitAction,
-    buttonLabel = "Create",
-}) {
+function RestaurantForm({ initialContents, submitAction, buttonLabel = "Create" }) {
+&nbsp;
     const navigate = useNavigate();
-&nbsp;
+    
     // Stryker disable all
     const {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm({ defaultValues: initialContents || {} });
+    } = useForm(
+        { defaultValues: initialContents || {}, }
+    );
     // Stryker enable all
-&nbsp;
+   
     const testIdPrefix = "RestaurantForm";
 &nbsp;
     return (
+&nbsp;
         &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
+&nbsp;
             {initialContents &amp;&amp; (
-                &lt;Form.Group className="mb-3"&gt;
+                &lt;Form.Group className="mb-3" &gt;
                     &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
                     &lt;Form.Control
                         data-testid={testIdPrefix + "-id"}
@@ -311,7 +292,7 @@ function RestaurantForm({
                 &lt;/Form.Group&gt;
             )}
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Group className="mb-3" &gt;
                 &lt;Form.Label htmlFor="name"&gt;Name&lt;/Form.Label&gt;
                 &lt;Form.Control
                     data-testid={testIdPrefix + "-name"}
@@ -320,10 +301,10 @@ function RestaurantForm({
                     isInvalid={Boolean(errors.name)}
                     {...register("name", {
                         required: "Name is required.",
-                        maxLength: {
+                        maxLength : {
                             value: 30,
-                            message: "Max length 30 characters",
-                        },
+                            message: "Max length 30 characters"
+                        }
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
@@ -331,7 +312,7 @@ function RestaurantForm({
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
+            &lt;Form.Group className="mb-3" &gt;
                 &lt;Form.Label htmlFor="description"&gt;Description&lt;/Form.Label&gt;
                 &lt;Form.Control
                     data-testid={testIdPrefix + "-description"}
@@ -339,7 +320,7 @@ function RestaurantForm({
                     type="text"
                     isInvalid={Boolean(errors.description)}
                     {...register("description", {
-                        required: "Description is required.",
+                        required: "Description is required."
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
@@ -347,23 +328,11 @@ function RestaurantForm({
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3"&gt;
-                &lt;Form.Label htmlFor="location"&gt;Location&lt;/Form.Label&gt;
-                &lt;Form.Control
-                    data-testid={testIdPrefix + "-location"}
-                    id="location"
-                    type="text"
-                    isInvalid={Boolean(errors.location)}
-                    {...register("location", {
-                        required: "Location is required.",
-                    })}
-                /&gt;
-                &lt;Form.Control.Feedback type="invalid"&gt;
-                    {errors.location?.message}
-                &lt;/Form.Control.Feedback&gt;
-            &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Button type="submit" data-testid={testIdPrefix + "-submit"}&gt;
+            &lt;Button
+                type="submit"
+                data-testid={testIdPrefix + "-submit"}
+            &gt;
                 {buttonLabel}
             &lt;/Button&gt;
             &lt;Button
@@ -373,19 +342,20 @@ function RestaurantForm({
             &gt;
                 Cancel
             &lt;/Button&gt;
+&nbsp;
         &lt;/Form&gt;
-    );
+&nbsp;
+    )
 }
 &nbsp;
-export default RestaurantForm;
-&nbsp;</pre></td></tr></table></pre>
+export default RestaurantForm;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sat May 20 2023 19:58:29 GMT-0700 (Pacific Daylight Time)
+                at Sat May 20 2023 20:04:57 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
