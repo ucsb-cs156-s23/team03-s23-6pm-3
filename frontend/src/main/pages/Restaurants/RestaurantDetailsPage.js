@@ -8,9 +8,9 @@ export default function RestaurantDetailsPage() {
     let { id } = useParams();
 
     const {
-        data: restaurant,
-        error,
-        status,
+        data: restaurants,
+        error: _error,
+        status: _status,
     } = useBackend(
         // Stryker disable next-line all : don't test internal caching of React Query
         [`/api/restaurants?id=${id}`],
@@ -28,9 +28,9 @@ export default function RestaurantDetailsPage() {
         <BasicLayout>
             <div className="pt-2">
                 <h1>Restaurant Details</h1>
-                {restaurant && (
+                {restaurants && (
                     <RestaurantTable
-                        restaurants={[restaurant]}
+                        restaurants={[restaurants]}
                         showButtons={false}
                     />
                 )}
