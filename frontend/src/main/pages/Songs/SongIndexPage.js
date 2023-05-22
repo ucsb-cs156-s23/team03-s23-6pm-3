@@ -23,10 +23,7 @@ export default function SongIndexPage() {
         <BasicLayout>
             <div className="pt-2">
                 <h1>Songs</h1>
-                <SongTable
-                    songs={songs}
-                    currentUser={currentUser}
-                />
+                <SongTable songs={songs} currentUser={currentUser} />
             </div>
         </BasicLayout>
     );

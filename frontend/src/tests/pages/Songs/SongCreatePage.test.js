@@ -1,38 +1,52 @@
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import SongCreatePage from "main/pages/Songs/SongCreatePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import mockConsole from "jest-mock-console";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockNavigate
-}));
-
-const mockAdd = jest.fn();
-jest.mock('main/utils/songUtils', () => {
+const mockToast = jest.fn();
+jest.mock("react-toastify", () => {
+    const originalModule = jest.requireActual("react-toastify");
     return {
         __esModule: true,
-        songUtils: {
-            add: () => { return mockAdd(); }
-        }
-    }
+        ...originalModule,
+        toast: (x) => mockToast(x),
+    };
+});
+
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => {
+    const originalModule = jest.requireActual("react-router-dom");
+    return {
+        __esModule: true,
+        ...originalModule,
+        Navigate: (x) => {
+            mockNavigate(x);
+            return null;
+        },
+    };
 });
 
 describe("SongCreatePage tests", () => {
-
     const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-    axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither); 
 
-    const queryClient = new QueryClient();
+    beforeEach(() => {
+        axiosMock.reset();
+        axiosMock.resetHistory();
+        axiosMock
+            .onGet("/api/currentUser")
+            .reply(200, apiCurrentUserFixtures.userOnly);
+        axiosMock
+            .onGet("/api/systemInfo")
+            .reply(200, systemInfoFixtures.showingNeither);
+    });
+
     test("renders without crashing", () => {
+        const queryClient = new QueryClient();
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
@@ -42,60 +56,57 @@ describe("SongCreatePage tests", () => {
         );
     });
 
-    test("redirects to /songs on submit", async () => {
+    test("when you fill in the form and hit submit, it makes a request to the backend", async () => {
+        const queryClient = new QueryClient();
+        const song = {
+            id: 1,
+            title: "Title1",
+            artist: "Artist1",
+            album: "Album1",
+        };
 
-        const restoreConsole = mockConsole();
+        axiosMock.onPost("/api/song/post").reply(202, song);
 
-        mockAdd.mockReturnValue({
-            "song": {
-                id: 3,
-                title: "Love Story",
-                artist: "Taylor Swift",
-                album: "Fearless"
-            }
-        });
-
-        render(
+        const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <SongCreatePage />
                 </MemoryRouter>
             </QueryClientProvider>
-        )
+        );
 
-        const titleInput = screen.getByLabelText("Title");
-        expect(titleInput).toBeInTheDocument();
-
-
-        const artistInput = screen.getByLabelText("Artist");
-        expect(artistInput).toBeInTheDocument();
-
-        const albumInput = screen.getByLabelText("Album");
-        expect(albumInput).toBeInTheDocument();
-
-        const createButton = screen.getByText("Create");
-        expect(createButton).toBeInTheDocument();
-
-        await act(async () => {
-            fireEvent.change(titleInput, { target: { value: 'Love Story' } })
-            fireEvent.change(artistInput, { target: { value: 'Taylor Swift' } })
-            fireEvent.change(albumInput, { target: { value: 'Fearless' } })
-            fireEvent.click(createButton);
+        await waitFor(() => {
+            expect(getByTestId("SongForm-title")).toBeInTheDocument();
         });
 
-        await waitFor(() => expect(mockAdd).toHaveBeenCalled());
-        await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/songs/list"));
+        const titleField = getByTestId("SongForm-title");
+        const artistField = getByTestId("SongForm-artist");
+        const albumField = getByTestId("SongForm-album");
+        const submitButton = getByTestId("SongForm-submit");
 
-        // assert - check that the console.log was called with the expected message
-        expect(console.log).toHaveBeenCalled();
-        const message = console.log.mock.calls[0][0];
-        const expectedMessage =  `createdSong: {"song":{"id":3,"title":"Love Story","artist":"Taylor Swift","album":"Fearless"}`
+        fireEvent.change(titleField, { target: { value: "Title1" } });
+        fireEvent.change(artistField, {
+            target: { value: "Artist1" },
+        });
+        fireEvent.change(albumField, {
+            target: { value: "Album1" },
+        });
 
-        expect(message).toMatch(expectedMessage);
-        restoreConsole();
+        expect(submitButton).toBeInTheDocument();
 
+        fireEvent.click(submitButton);
+
+        await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
+
+        expect(axiosMock.history.post[0].params).toEqual({
+            title: "Title1",
+            artist: "Artist1",
+            album: "Album1",
+        });
+
+        expect(mockToast).toBeCalledWith(
+            "New song created - id: 1 title: Title1"
+        );
+        expect(mockNavigate).toBeCalledWith({ to: "/songs/list" });
     });
-
 });
-
-

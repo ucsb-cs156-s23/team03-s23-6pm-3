@@ -1,77 +1,96 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
-
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import SongForm from "main/components/Songs/SongForm";
-import { songFixtures } from "fixtures/songFixtures";
-
-import { QueryClient, QueryClientProvider } from "react-query";
+import { ucsbDatesFixtures } from "fixtures/ucsbDatesFixtures";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const mockedNavigate = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockedNavigate
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useNavigate: () => mockedNavigate,
 }));
 
 describe("SongForm tests", () => {
-    const queryClient = new QueryClient();
-
-    const expectedHeaders = ["Title","Artist","Album"];
-    const testId = "SongForm";
-
-    test("renders correctly with no initialContents", async () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Router>
-                    <SongForm />
-                </Router>
-            </QueryClientProvider>
+    test("renders correctly", async () => {
+        const { getByText, findByText } = render(
+            <Router>
+                <SongForm />
+            </Router>
         );
-
-        expect(await screen.findByText(/Create/)).toBeInTheDocument();
-
-        expectedHeaders.forEach((headerText) => {
-            const header = screen.getByText(headerText);
-            expect(header).toBeInTheDocument();
-          });
-
+        await findByText(/Title/);
+        await findByText(/Create/);
     });
 
-    test("renders correctly when passing in initialContents", async () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Router>
-                    <SongForm initialContents={songFixtures.oneSong} />
-                </Router>
-            </QueryClientProvider>
+    test("renders correctly when passing in a Song", async () => {
+        const { getByText, getByTestId, findByTestId } = render(
+            <Router>
+                <SongForm initialSong={ucsbDatesFixtures.oneDate} />
+            </Router>
         );
+        await findByTestId(/SongForm-id/);
+        expect(getByText(/Id/)).toBeInTheDocument();
+        expect(getByTestId(/SongForm-id/)).toHaveValue("1");
+    });
 
-        expect(await screen.findByText(/Create/)).toBeInTheDocument();
+    test("Correct Error messsages on missing input", async () => {
+        const { getByTestId, getByText, findByTestId, findByText } = render(
+            <Router>
+                <SongForm />
+            </Router>
+        );
+        await findByTestId("SongForm-submit");
+        const submitButton = getByTestId("SongForm-submit");
 
-        expectedHeaders.forEach((headerText) => {
-            const header = screen.getByText(headerText);
-            expect(header).toBeInTheDocument();
+        fireEvent.click(submitButton);
+
+        await findByText(/Title is required./);
+        expect(getByText(/Title is required./)).toBeInTheDocument();
+        expect(getByText(/Artist is required./)).toBeInTheDocument();
+        expect(getByText(/Album is required./)).toBeInTheDocument();
+    });
+
+    test("No Error messsages on good input", async () => {
+        const mockSubmitAction = jest.fn();
+
+        const { getByTestId, queryByText, findByTestId } = render(
+            <Router>
+                <SongForm submitAction={mockSubmitAction} />
+            </Router>
+        );
+        await findByTestId("SongForm-title");
+
+        const titleField = getByTestId("SongForm-title");
+        const artistField = getByTestId("SongForm-artist");
+        const albumField = getByTestId("SongForm-album");
+        const submitButton = getByTestId("SongForm-submit");
+
+        fireEvent.change(titleField, { target: { value: "Title1" } });
+        fireEvent.change(artistField, {
+            target: { value: "Artist1" },
         });
+        fireEvent.change(albumField, {
+            target: { value: "Album1" },
+        });
+        fireEvent.click(submitButton);
 
-        expect(await screen.findByTestId(`${testId}-id`)).toBeInTheDocument();
-        expect(screen.getByText(`Id`)).toBeInTheDocument();
+        await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
+
+        expect(queryByText(/Title is required./)).not.toBeInTheDocument();
+        expect(queryByText(/Artist is required./)).not.toBeInTheDocument();
+        expect(queryByText(/Album is required./)).not.toBeInTheDocument();
     });
-
 
     test("that navigate(-1) is called when Cancel is clicked", async () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Router>
-                    <SongForm />
-                </Router>
-            </QueryClientProvider>
+        const { getByTestId, findByTestId } = render(
+            <Router>
+                <SongForm />
+            </Router>
         );
-        expect(await screen.findByTestId(`${testId}-cancel`)).toBeInTheDocument();
-        const cancelButton = screen.getByTestId(`${testId}-cancel`);
+        await findByTestId("SongForm-cancel");
+        const cancelButton = getByTestId("SongForm-cancel");
 
         fireEvent.click(cancelButton);
 
         await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
     });
-
 });

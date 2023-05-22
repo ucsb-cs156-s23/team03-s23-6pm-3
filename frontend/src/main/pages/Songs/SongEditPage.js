@@ -14,7 +14,7 @@ export default function SongsEditPage() {
         status,
     } = useBackend(
         // Stryker disable next-line all : don't test internal caching of React Query
-        [`/api/song?id=${id}`],
+        [`/api/songs?id=${id}`],
         {
             // Stryker disable next-line all : GET is the default, so changing this to "" doesn't introduce a bug
             method: "GET",
@@ -39,9 +39,7 @@ export default function SongsEditPage() {
     });
 
     const onSuccess = (song) => {
-        toast(
-            `Song Updated - id: ${song.id} name: ${song.name}`
-        );
+        toast(`Song Updated - id: ${song.id} title: ${song.title}`);
     };
 
     const mutation = useBackendMutation(
