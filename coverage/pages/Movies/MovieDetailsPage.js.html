@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for pages/Songs/SongDetailsPage.js</title>
+    <title>Code coverage report for pages/Movies/MovieDetailsPage.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/Songs</a> SongDetailsPage.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">pages/Movies</a> MovieDetailsPage.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -81,8 +81,7 @@
 <a name='L16'></a><a href='#L16'>16</a>
 <a name='L17'></a><a href='#L17'>17</a>
 <a name='L18'></a><a href='#L18'>18</a>
-<a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L19'></a><a href='#L19'>19</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -93,7 +92,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -103,24 +101,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
-import SongTable from 'main/components/Songs/SongTable';
-import { songUtils } from 'main/utils/songUtils';
+import MovieTable from 'main/components/Movies/MovieTable';
+import { movieUtils } from 'main/utils/movieUtils';
 &nbsp;
-export default function SongDetailsPage() {
+export default function MovieDetailsPage() {
   let { id } = useParams();
 &nbsp;
-  const response = songUtils.getById(id);
+  const response = movieUtils.getById(id);
 &nbsp;
   return (
     &lt;BasicLayout&gt;
       &lt;div className="pt-2"&gt;
-        &lt;h1&gt;Song Details&lt;/h1&gt;
-        &lt;SongTable songs={[response.song]} showButtons={false} /&gt;
+        &lt;h1&gt;Movie Details&lt;/h1&gt;
+        &lt;MovieTable movies={[response.movie]} showButtons={false} /&gt;
       &lt;/div&gt;
     &lt;/BasicLayout&gt;
   )
-}
-&nbsp;</pre></td></tr></table></pre>
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
