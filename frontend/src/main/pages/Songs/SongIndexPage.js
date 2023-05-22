@@ -1,34 +1,30 @@
-import React from 'react'
-import Button from 'react-bootstrap/Button';
+import React from "react";
+import { useBackend } from "main/utils/useBackend";
+
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import SongTable from 'main/components/Songs/SongTable';
-import { songUtils } from 'main/utils/songUtils';
-import { useNavigate, Link } from 'react-router-dom';
+import SongTable from "main/components/Songs/SongTable";
+import { useCurrentUser } from "main/utils/currentUser";
 
 export default function SongIndexPage() {
+    const currentUser = useCurrentUser();
 
-    const navigate = useNavigate();
-
-    const songCollection = songUtils.get();
-    const songs = songCollection.songs;
-
-    const showCell = (cell) => JSON.stringify(cell.row.values);
-
-    const deleteCallback = async (cell) => {
-        console.log(`SongIndexPage deleteCallback: ${showCell(cell)})`);
-        songUtils.del(cell.row.values.id);
-        navigate("/songs/list");
-    }
+    const {
+        data: songs,
+        error: _error,
+        status: _status,
+    } = useBackend(
+        // Stryker disable next-line all : don't test internal caching of React Query
+        ["/api/song/all"],
+        { method: "GET", url: "/api/song/all" },
+        []
+    );
 
     return (
         <BasicLayout>
             <div className="pt-2">
-                <Button style={{ float: "right" }} as={Link} to="/songs/create">
-                    Create Song
-                </Button>
                 <h1>Songs</h1>
-                <SongTable songs={songs} deleteCallback={deleteCallback} />
+                <SongTable songs={songs} currentUser={currentUser} />
             </div>
         </BasicLayout>
-    )
+    );
 }

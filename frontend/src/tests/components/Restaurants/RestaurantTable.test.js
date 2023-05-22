@@ -1,11 +1,9 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
-import RestaurantTable, {
-    showCell,
-} from "main/components/Restaurants/RestaurantTable";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { restaurantFixtures } from "fixtures/restaurantFixtures";
-import mockConsole from "jest-mock-console";
+import RestaurantTable from "main/components/Restaurants/RestaurantTable";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { MemoryRouter } from "react-router-dom";
+import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
 const mockedNavigate = jest.fn();
 
@@ -14,257 +12,162 @@ jest.mock("react-router-dom", () => ({
     useNavigate: () => mockedNavigate,
 }));
 
-describe("RestaurantTable tests", () => {
+describe("UserTable tests", () => {
     const queryClient = new QueryClient();
 
-    const expectedHeaders = ["id", "Name", "Description", "Location"];
-    const expectedFields = ["id", "name", "description", "location"];
-    const testId = "RestaurantTable";
+    test("renders without crashing for empty table with user not logged in", () => {
+        const currentUser = null;
 
-    test("showCell function works properly", () => {
-        const cell = {
-            row: {
-                values: { a: 1, b: 2, c: 3 },
-            },
-        };
-        expect(showCell(cell)).toBe(`{"a":1,"b":2,"c":3}`);
-    });
-
-    test("renders without crashing for empty table", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <RestaurantTable restaurants={[]} />
+                    <RestaurantTable
+                        restaurants={[]}
+                        currentUser={currentUser}
+                    />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+    });
+    test("renders without crashing for empty table for ordinary user", () => {
+        const currentUser = currentUserFixtures.userOnly;
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <RestaurantTable
+                        restaurants={[]}
+                        currentUser={currentUser}
+                    />
                 </MemoryRouter>
             </QueryClientProvider>
         );
     });
 
-    test("Has the expected column headers, content and buttons", () => {
+    test("renders without crashing for empty table for admin", () => {
+        const currentUser = currentUserFixtures.adminUser;
+
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <RestaurantTable
+                        restaurants={[]}
+                        currentUser={currentUser}
+                    />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+    });
+
+    test("Has the expected colum headers and content for adminUser", () => {
+        const currentUser = currentUserFixtures.adminUser;
+
+        const { getByText, getByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <RestaurantTable
                         restaurants={restaurantFixtures.threeRestaurants}
+                        currentUser={currentUser}
                     />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
+        const expectedHeaders = ["id", "Name", "Description", "Location"];
+        const expectedFields = ["id", "name", "description", "location"];
+        const testId = "RestaurantTable";
+
         expectedHeaders.forEach((headerText) => {
-            const header = screen.getByText(headerText);
+            const header = getByText(headerText);
             expect(header).toBeInTheDocument();
         });
 
         expectedFields.forEach((field) => {
-            const header = screen.getByTestId(
-                `${testId}-cell-row-0-col-${field}`
-            );
+            const header = getByTestId(`${testId}-cell-row-0-col-${field}`);
             expect(header).toBeInTheDocument();
         });
 
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-id`)
-        ).toHaveTextContent("2");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-name`)
-        ).toHaveTextContent("Name2");
-
-        expect(
-            screen.getByTestId(`${testId}-cell-row-1-col-id`)
-        ).toHaveTextContent("3");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-1-col-name`)
-        ).toHaveTextContent("Name3");
-
-        const detailsButton = screen.getByTestId(
-            `${testId}-cell-row-0-col-Details-button`
+        expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent(
+            "2"
         );
-        expect(detailsButton).toBeInTheDocument();
-        expect(detailsButton).toHaveClass("btn-primary");
-
-        const editButton = screen.getByTestId(
-            `${testId}-cell-row-0-col-Edit-button`
+        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent(
+            "3"
         );
+
+        const editButton = getByTestId(`${testId}-cell-row-0-col-Edit-button`);
         expect(editButton).toBeInTheDocument();
         expect(editButton).toHaveClass("btn-primary");
 
-        const deleteButton = screen.getByTestId(
+        const deleteButton = getByTestId(
             `${testId}-cell-row-0-col-Delete-button`
         );
         expect(deleteButton).toBeInTheDocument();
         expect(deleteButton).toHaveClass("btn-danger");
     });
 
-    test("Has the expected column headers, content and no buttons when showButtons=false", () => {
-        render(
+    test("Edit button navigates to the edit page for admin user", async () => {
+        const currentUser = currentUserFixtures.adminUser;
+
+        const { getByText, getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <RestaurantTable
                         restaurants={restaurantFixtures.threeRestaurants}
-                        showButtons={false}
+                        currentUser={currentUser}
                     />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        expectedHeaders.forEach((headerText) => {
-            const header = screen.getByText(headerText);
-            expect(header).toBeInTheDocument();
+        await waitFor(() => {
+            expect(
+                getByTestId(`RestaurantTable-cell-row-0-col-id`)
+            ).toHaveTextContent("2");
         });
 
-        expectedFields.forEach((field) => {
-            const header = screen.getByTestId(
-                `${testId}-cell-row-0-col-${field}`
-            );
-            expect(header).toBeInTheDocument();
-        });
-
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-id`)
-        ).toHaveTextContent("2");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-name`)
-        ).toHaveTextContent("Name2");
-
-        expect(
-            screen.getByTestId(`${testId}-cell-row-1-col-id`)
-        ).toHaveTextContent("3");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-1-col-name`)
-        ).toHaveTextContent("Name3");
-
-        expect(screen.queryByText("Delete")).not.toBeInTheDocument();
-        expect(screen.queryByText("Edit")).not.toBeInTheDocument();
-        expect(screen.queryByText("Details")).not.toBeInTheDocument();
-    });
-
-    test("Edit button navigates to the edit page", async () => {
-        // arrange
-        const restoreConsole = mockConsole();
-
-        // act - render the component
-        render(
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter>
-                    <RestaurantTable
-                        restaurants={restaurantFixtures.threeRestaurants}
-                    />
-                </MemoryRouter>
-            </QueryClientProvider>
-        );
-
-        // assert - check that the expected content is rendered
-        expect(
-            await screen.findByTestId(`${testId}-cell-row-0-col-id`)
-        ).toHaveTextContent("2");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-name`)
-        ).toHaveTextContent("Name2");
-
-        const editButton = screen.getByTestId(
-            `${testId}-cell-row-0-col-Edit-button`
+        const editButton = getByTestId(
+            `RestaurantTable-cell-row-0-col-Edit-button`
         );
         expect(editButton).toBeInTheDocument();
 
-        // act - click the edit button
         fireEvent.click(editButton);
 
-        // assert - check that the navigate function was called with the expected path
         await waitFor(() =>
             expect(mockedNavigate).toHaveBeenCalledWith("/restaurants/edit/2")
         );
-
-        // assert - check that the console.log was called with the expected message
-        expect(console.log).toHaveBeenCalled();
-        const message = console.log.mock.calls[0][0];
-        const expectedMessage = `editCallback: {"id":2,"name":"Name2","description":"Description2","location":"Location2"})`;
-        expect(message).toMatch(expectedMessage);
-        restoreConsole();
     });
 
-    test("Details button navigates to the details page", async () => {
-        // arrange
-        const restoreConsole = mockConsole();
+    test("Details button navigates to the details page for admin user", async () => {
+        const currentUser = currentUserFixtures.adminUser;
 
-        // act - render the component
-        render(
+        const { getByText, getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <RestaurantTable
-                        restaurants={restaurantFixtures.threeRestaurants}
+                        restaurants={restaurantFixtures.oneRestaurant}
+                        currentUser={currentUser}
                     />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        // assert - check that the expected content is rendered
-        expect(
-            await screen.findByTestId(`${testId}-cell-row-0-col-id`)
-        ).toHaveTextContent("2");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-name`)
-        ).toHaveTextContent("Name2");
+        await waitFor(() => {
+            expect(
+                getByTestId(`RestaurantTable-cell-row-0-col-id`)
+            ).toHaveTextContent("1");
+        });
 
-        const detailsButton = screen.getByTestId(
-            `${testId}-cell-row-0-col-Details-button`
+        const detailsButton = getByTestId(
+            `RestaurantTable-cell-row-0-col-Details-button`
         );
         expect(detailsButton).toBeInTheDocument();
 
-        // act - click the details button
         fireEvent.click(detailsButton);
 
-        // assert - check that the navigate function was called with the expected path
         await waitFor(() =>
             expect(mockedNavigate).toHaveBeenCalledWith(
-                "/restaurants/details/2"
+                "/restaurants/details/1"
             )
         );
-
-        // assert - check that the console.log was called with the expected message
-        expect(console.log).toHaveBeenCalled();
-        const message = console.log.mock.calls[0][0];
-        const expectedMessage = `detailsCallback: {"id":2,"name":"Name2","description":"Description2","location":"Location2"})`;
-        expect(message).toMatch(expectedMessage);
-        restoreConsole();
-    });
-
-    test("Delete button calls delete callback", async () => {
-        // arrange
-        const restoreConsole = mockConsole();
-
-        // act - render the component
-        render(
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter>
-                    <RestaurantTable
-                        restaurants={restaurantFixtures.threeRestaurants}
-                    />
-                </MemoryRouter>
-            </QueryClientProvider>
-        );
-
-        // assert - check that the expected content is rendered
-        expect(
-            await screen.findByTestId(`${testId}-cell-row-0-col-id`)
-        ).toHaveTextContent("2");
-        expect(
-            screen.getByTestId(`${testId}-cell-row-0-col-name`)
-        ).toHaveTextContent("Name2");
-
-        const deleteButton = screen.getByTestId(
-            `${testId}-cell-row-0-col-Delete-button`
-        );
-        expect(deleteButton).toBeInTheDocument();
-
-        // act - click the delete button
-        fireEvent.click(deleteButton);
-
-        // assert - check that the console.log was called with the expected message
-        await waitFor(() => expect(console.log).toHaveBeenCalled());
-        const message = console.log.mock.calls[0][0];
-        const expectedMessage = `deleteCallback: {"id":2,"name":"Name2","description":"Description2","location":"Location2"})`;
-        expect(message).toMatch(expectedMessage);
-        restoreConsole();
     });
 });
