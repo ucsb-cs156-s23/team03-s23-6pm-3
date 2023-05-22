@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s23/team03-s23-6pm-3
 owner: ucsb-cs156-s23
 repo_name: team03-s23-6pm-3
-pull_requests: [{"author":{"id":"MDQ6VXNlcjg3Mzk1Njk1","is_bot":false,"login":"MrJacobEisner","name":"Jacob Eisner"},"headRefName":"je-combine-front-back","number":42,"title":"Je combine front back","url":"https://github.com/ucsb-cs156-s23/team03-s23-6pm-3/pull/42"},{"author":{"id":"MDQ6VXNlcjczNzY2Mzgx","is_bot":false,"login":"nhs-wobuzhidao","name":""},"headRefName":"movie-frontend","number":39,"title":"Movie frontend","url":"https://github.com/ucsb-cs156-s23/team03-s23-6pm-3/pull/39"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjczNzY2Mzgx","is_bot":false,"login":"nhs-wobuzhidao","name":""},"headRefName":"movie-frontend","number":39,"title":"Movie frontend","url":"https://github.com/ucsb-cs156-s23/team03-s23-6pm-3/pull/39"}]
