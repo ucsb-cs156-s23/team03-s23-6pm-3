@@ -3,14 +3,15 @@ import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
 import RestaurantTable from "main/components/Restaurants/RestaurantTable";
 import { useBackend } from "main/utils/useBackend";
+import { useCurrentUser } from "main/utils/currentUser";
 
 export default function RestaurantDetailsPage() {
     let { id } = useParams();
 
     const {
         data: restaurants,
-        error: _error,
-        status: _status,
+        error,
+        status,
     } = useBackend(
         // Stryker disable next-line all : don't test internal caching of React Query
         [`/api/restaurants?id=${id}`],
@@ -28,12 +29,7 @@ export default function RestaurantDetailsPage() {
         <BasicLayout>
             <div className="pt-2">
                 <h1>Restaurant Details</h1>
-                {restaurants && (
-                    <RestaurantTable
-                        restaurants={[restaurants]}
-                        showButtons={false}
-                    />
-                )}
+                {restaurants && <RestaurantTable restaurants={[restaurants]} />}
             </div>
         </BasicLayout>
     );
