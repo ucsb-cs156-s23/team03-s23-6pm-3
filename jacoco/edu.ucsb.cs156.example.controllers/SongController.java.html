@@ -24,13 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import java.time.LocalDateTime;
-
 @Api(description = &quot;Song&quot;)
 @RequestMapping(&quot;/api/song&quot;)
 @RestController
-<span class="fc" id="L32">@Slf4j</span>
-<span class="fc" id="L33">public class SongController extends ApiController {</span>
+<span class="fc" id="L30">@Slf4j</span>
+<span class="fc" id="L31">public class SongController extends ApiController {</span>
 
     @Autowired
     SongRepository songRepository;
@@ -39,8 +37,8 @@ import java.time.LocalDateTime;
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
     public Iterable&lt;Song&gt; allSong() {
-<span class="fc" id="L42">        Iterable&lt;Song&gt; dates = songRepository.findAll();</span>
-<span class="fc" id="L43">        return dates;</span>
+<span class="fc" id="L40">        Iterable&lt;Song&gt; dates = songRepository.findAll();</span>
+<span class="fc" id="L41">        return dates;</span>
     }
 
     @ApiOperation(value = &quot;Get a single song&quot;)
@@ -48,10 +46,10 @@ import java.time.LocalDateTime;
     @GetMapping(&quot;&quot;)
     public Song getById(
             @ApiParam(&quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L51">        Song song = songRepository.findById(id)</span>
-<span class="fc" id="L52">                .orElseThrow(() -&gt; new EntityNotFoundException(Song.class, id));</span>
+<span class="fc" id="L49">        Song song = songRepository.findById(id)</span>
+<span class="fc" id="L50">                .orElseThrow(() -&gt; new EntityNotFoundException(Song.class, id));</span>
 
-<span class="fc" id="L54">        return song;</span>
+<span class="fc" id="L52">        return song;</span>
     }
 
     @ApiOperation(value = &quot;Create a new song&quot;)
@@ -64,14 +62,14 @@ import java.time.LocalDateTime;
             )
             throws JsonProcessingException {
 
-<span class="fc" id="L67">        Song song = new Song();</span>
-<span class="fc" id="L68">        song.setTitle(title);</span>
-<span class="fc" id="L69">        song.setArtist(artist);</span>
-<span class="fc" id="L70">        song.setAlbum(album);</span>
+<span class="fc" id="L65">        Song song = new Song();</span>
+<span class="fc" id="L66">        song.setTitle(title);</span>
+<span class="fc" id="L67">        song.setArtist(artist);</span>
+<span class="fc" id="L68">        song.setAlbum(album);</span>
 
-<span class="fc" id="L72">        Song savedSong = songRepository.save(song);</span>
+<span class="fc" id="L70">        Song savedSong = songRepository.save(song);</span>
 
-<span class="fc" id="L74">        return savedSong;</span>
+<span class="fc" id="L72">        return savedSong;</span>
     }
 
     @ApiOperation(value = &quot;Delete a Song&quot;)
@@ -79,11 +77,11 @@ import java.time.LocalDateTime;
     @DeleteMapping(&quot;&quot;)
     public Object deleteSong(
             @ApiParam(&quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L82">        Song song = songRepository.findById(id)</span>
-<span class="fc" id="L83">                .orElseThrow(() -&gt; new EntityNotFoundException(Song.class, id));</span>
+<span class="fc" id="L80">        Song song = songRepository.findById(id)</span>
+<span class="fc" id="L81">                .orElseThrow(() -&gt; new EntityNotFoundException(Song.class, id));</span>
 
-<span class="fc" id="L85">        songRepository.delete(song);</span>
-<span class="fc" id="L86">        return genericMessage(&quot;Song with id %s deleted&quot;.formatted(id));</span>
+<span class="fc" id="L83">        songRepository.delete(song);</span>
+<span class="fc" id="L84">        return genericMessage(&quot;Song with id %s deleted&quot;.formatted(id));</span>
     }
 
     @ApiOperation(value = &quot;Update a single song&quot;)
@@ -93,16 +91,16 @@ import java.time.LocalDateTime;
             @ApiParam(&quot;id&quot;) @RequestParam Long id,
             @RequestBody @Valid Song incoming) {
 
-<span class="fc" id="L96">        Song song = songRepository.findById(id)</span>
-<span class="fc" id="L97">                .orElseThrow(() -&gt; new EntityNotFoundException(Song.class, id));</span>
+<span class="fc" id="L94">        Song song = songRepository.findById(id)</span>
+<span class="fc" id="L95">                .orElseThrow(() -&gt; new EntityNotFoundException(Song.class, id));</span>
 
-<span class="fc" id="L99">        song.setTitle(incoming.getTitle());</span>
-<span class="fc" id="L100">        song.setArtist(incoming.getArtist());</span>
-<span class="fc" id="L101">        song.setAlbum(incoming.getAlbum());</span>
+<span class="fc" id="L97">        song.setTitle(incoming.getTitle());</span>
+<span class="fc" id="L98">        song.setArtist(incoming.getArtist());</span>
+<span class="fc" id="L99">        song.setAlbum(incoming.getAlbum());</span>
 
-<span class="fc" id="L103">        songRepository.save(song);</span>
+<span class="fc" id="L101">        songRepository.save(song);</span>
 
-<span class="fc" id="L105">        return song;</span>
+<span class="fc" id="L103">        return song;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
