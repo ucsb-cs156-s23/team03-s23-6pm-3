@@ -4,33 +4,31 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 function RestaurantForm({
-    initialContents,
+    initialRestaurant,
     submitAction,
     buttonLabel = "Create",
 }) {
-    const navigate = useNavigate();
-
     // Stryker disable all
     const {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm({ defaultValues: initialContents || {} });
+    } = useForm({ defaultValues: initialRestaurant || {} });
     // Stryker enable all
 
-    const testIdPrefix = "RestaurantForm";
+    const navigate = useNavigate();
 
     return (
         <Form onSubmit={handleSubmit(submitAction)}>
-            {initialContents && (
+            {initialRestaurant && (
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="id">Id</Form.Label>
                     <Form.Control
-                        data-testid={testIdPrefix + "-id"}
+                        data-testid="RestaurantForm-id"
                         id="id"
                         type="text"
                         {...register("id")}
-                        value={initialContents.id}
+                        value={initialRestaurant.id}
                         disabled
                     />
                 </Form.Group>
@@ -39,16 +37,12 @@ function RestaurantForm({
             <Form.Group className="mb-3">
                 <Form.Label htmlFor="name">Name</Form.Label>
                 <Form.Control
-                    data-testid={testIdPrefix + "-name"}
+                    data-testid="RestaurantForm-name"
                     id="name"
                     type="text"
                     isInvalid={Boolean(errors.name)}
                     {...register("name", {
                         required: "Name is required.",
-                        maxLength: {
-                            value: 30,
-                            message: "Max length 30 characters",
-                        },
                     })}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -59,7 +53,7 @@ function RestaurantForm({
             <Form.Group className="mb-3">
                 <Form.Label htmlFor="description">Description</Form.Label>
                 <Form.Control
-                    data-testid={testIdPrefix + "-description"}
+                    data-testid="RestaurantForm-description"
                     id="description"
                     type="text"
                     isInvalid={Boolean(errors.description)}
@@ -75,7 +69,7 @@ function RestaurantForm({
             <Form.Group className="mb-3">
                 <Form.Label htmlFor="location">Location</Form.Label>
                 <Form.Control
-                    data-testid={testIdPrefix + "-location"}
+                    data-testid="RestaurantForm-location"
                     id="location"
                     type="text"
                     isInvalid={Boolean(errors.location)}
@@ -88,13 +82,13 @@ function RestaurantForm({
                 </Form.Control.Feedback>
             </Form.Group>
 
-            <Button type="submit" data-testid={testIdPrefix + "-submit"}>
+            <Button type="submit" data-testid="RestaurantForm-submit">
                 {buttonLabel}
             </Button>
             <Button
                 variant="Secondary"
                 onClick={() => navigate(-1)}
-                data-testid={testIdPrefix + "-cancel"}
+                data-testid="RestaurantForm-cancel"
             >
                 Cancel
             </Button>

@@ -1,51 +1,73 @@
-import { render, screen } from "@testing-library/react";
-import RestaurantDetailsPage from "main/pages/Restaurants/RestaurantDetailsPage";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
+import RestaurantDetailsPage from "main/pages/Restaurants/RestaurantDetailsPage";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
+import { restaurantFixtures } from "fixtures/restaurantFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
+import mockConsole from "jest-mock-console";
 
-const mockNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-    ...jest.requireActual("react-router-dom"),
-    useParams: () => ({
-        id: 3,
-    }),
-    useNavigate: () => mockNavigate,
-}));
-
-jest.mock("main/utils/restaurantUtils", () => {
+const mockToast = jest.fn();
+jest.mock("react-toastify", () => {
+    const originalModule = jest.requireActual("react-toastify");
     return {
         __esModule: true,
-        restaurantUtils: {
-            getById: (_id) => {
-                return {
-                    restaurant: {
-                        id: 3,
-                        name: "Name3",
-                        description: "Description3",
-                        location: "Location3",
-                    },
-                };
-            },
+        ...originalModule,
+        toast: (x) => mockToast(x),
+    };
+});
+
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => {
+    const originalModule = jest.requireActual("react-router-dom");
+    return {
+        __esModule: true,
+        ...originalModule,
+        useParams: () => ({
+            id: 1,
+        }),
+        Navigate: (x) => {
+            mockNavigate(x);
+            return null;
         },
     };
 });
 
 describe("RestaurantDetailsPage tests", () => {
     const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock
-        .onGet("/api/currentUser")
-        .reply(200, apiCurrentUserFixtures.userOnly);
-    axiosMock
-        .onGet("/api/systemInfo")
-        .reply(200, systemInfoFixtures.showingNeither);
 
-    const queryClient = new QueryClient();
-    test("renders without crashing", () => {
+    const testId = "RestaurantTable";
+
+    const setupUserOnly = () => {
+        axiosMock.reset();
+        axiosMock.resetHistory();
+        axiosMock
+            .onGet("/api/currentUser")
+            .reply(200, apiCurrentUserFixtures.userOnly);
+        axiosMock
+            .onGet("/api/systemInfo")
+            .reply(200, systemInfoFixtures.showingNeither);
+    };
+
+    const setupAdminUser = () => {
+        axiosMock.reset();
+        axiosMock.resetHistory();
+        axiosMock
+            .onGet("/api/currentUser")
+            .reply(200, apiCurrentUserFixtures.adminUser);
+        axiosMock
+            .onGet("/api/systemInfo")
+            .reply(200, systemInfoFixtures.showingNeither);
+    };
+
+    test("renders without crashing for regular user", () => {
+        setupUserOnly();
+        const queryClient = new QueryClient();
+        axiosMock.onGet("/api/restaurants").reply(200, []);
+
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
@@ -55,7 +77,11 @@ describe("RestaurantDetailsPage tests", () => {
         );
     });
 
-    test("loads the correct fields, and no buttons", async () => {
+    test("renders without crashing for admin user", () => {
+        setupAdminUser();
+        const queryClient = new QueryClient();
+        axiosMock.onGet("/api/restaurants").reply(200, []);
+
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
@@ -63,12 +89,110 @@ describe("RestaurantDetailsPage tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-        expect(screen.getByText("Name3")).toBeInTheDocument();
-        expect(screen.getByText("Description3")).toBeInTheDocument();
-        expect(screen.getByText("Location3")).toBeInTheDocument();
+    });
 
-        expect(screen.queryByText("Delete")).not.toBeInTheDocument();
-        expect(screen.queryByText("Edit")).not.toBeInTheDocument();
-        expect(screen.queryByText("Details")).not.toBeInTheDocument();
+    test("renders one restaurant without crashing for regular user", async () => {
+        setupUserOnly();
+        const queryClient = new QueryClient();
+        axiosMock.onGet("/api/restaurants", { params: { id: 1 } }).reply(200, {
+            id: 1,
+            name: "Name1",
+            description: "Description1",
+            location: "Location1",
+        });
+
+        const { getByTestId, queryByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <RestaurantDetailsPage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => {
+            expect(
+                getByTestId(`${testId}-cell-row-0-col-id`)
+            ).toHaveTextContent("1");
+        });
+        expect(getByTestId(`${testId}-cell-row-0-col-name`)).toHaveTextContent(
+            "Name1"
+        );
+        expect(
+            getByTestId(`${testId}-cell-row-0-col-description`)
+        ).toHaveTextContent("Description1");
+        expect(
+            getByTestId(`${testId}-cell-row-0-col-location`)
+        ).toHaveTextContent("Location1");
+        expect(
+            getByTestId(`${testId}-cell-row-0-col-location`)
+        ).toHaveTextContent("Location1");
+        expect(
+            queryByTestId(`${testId}-cell-row-0-col-Delete`)
+        ).not.toBeInTheDocument();
+    });
+
+    test("renders one restaurant without crashing for admin user", async () => {
+        setupAdminUser();
+        const queryClient = new QueryClient();
+        axiosMock.onGet("/api/restaurants", { params: { id: 1 } }).reply(200, {
+            id: 1,
+            name: "Name1",
+            description: "Description1",
+            location: "Location1",
+        });
+
+        const { getByTestId, queryByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <RestaurantDetailsPage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => {
+            expect(
+                getByTestId(`${testId}-cell-row-0-col-id`)
+            ).toHaveTextContent("1");
+        });
+        expect(getByTestId(`${testId}-cell-row-0-col-name`)).toHaveTextContent(
+            "Name1"
+        );
+        expect(
+            getByTestId(`${testId}-cell-row-0-col-description`)
+        ).toHaveTextContent("Description1");
+        expect(
+            queryByTestId(`${testId}-cell-row-0-col-Delete`)
+        ).not.toBeInTheDocument();
+    });
+
+    test("renders empty table when backend unavailable, user only", async () => {
+        setupUserOnly();
+
+        const queryClient = new QueryClient();
+        axiosMock.onGet("/api/restaurants").timeout();
+
+        const restoreConsole = mockConsole();
+
+        const { queryByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <RestaurantDetailsPage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => {
+            expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1);
+        });
+
+        const errorMessage = console.error.mock.calls[0][0];
+        expect(errorMessage).toMatch(
+            "Error communicating with backend via GET on /api/restaurants"
+        );
+        restoreConsole();
+
+        expect(
+            queryByTestId(`${testId}-cell-row-0-col-id`)
+        ).not.toBeInTheDocument();
     });
 });
