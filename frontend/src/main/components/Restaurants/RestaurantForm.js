@@ -74,7 +74,6 @@ function RestaurantForm({
                     type="text"
                     isInvalid={Boolean(errors.location)}
                     {...register("location", {
-                        required: true,
                         required: "Location is required.",
                     })}
                 />
