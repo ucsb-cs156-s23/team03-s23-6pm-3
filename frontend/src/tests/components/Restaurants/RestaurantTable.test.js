@@ -136,4 +136,38 @@ describe("UserTable tests", () => {
             expect(mockedNavigate).toHaveBeenCalledWith("/restaurants/edit/2")
         );
     });
+
+    test("Details button navigates to the details page for admin user", async () => {
+        const currentUser = currentUserFixtures.adminUser;
+
+        const { getByText, getByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <RestaurantTable
+                        restaurants={restaurantFixtures.oneRestaurant}
+                        currentUser={currentUser}
+                    />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => {
+            expect(
+                getByTestId(`RestaurantTable-cell-row-0-col-id`)
+            ).toHaveTextContent("1");
+        });
+
+        const detailsButton = getByTestId(
+            `RestaurantTable-cell-row-0-col-Details-button`
+        );
+        expect(detailsButton).toBeInTheDocument();
+
+        fireEvent.click(detailsButton);
+
+        await waitFor(() =>
+            expect(mockedNavigate).toHaveBeenCalledWith(
+                "/restaurants/details/1"
+            )
+        );
+    });
 });

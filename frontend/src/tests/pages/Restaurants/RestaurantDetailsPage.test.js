@@ -20,6 +20,22 @@ jest.mock("react-toastify", () => {
     };
 });
 
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => {
+    const originalModule = jest.requireActual("react-router-dom");
+    return {
+        __esModule: true,
+        ...originalModule,
+        useParams: () => ({
+            id: 1,
+        }),
+        Navigate: (x) => {
+            mockNavigate(x);
+            return null;
+        },
+    };
+});
+
 describe("RestaurantDetailsPage tests", () => {
     const axiosMock = new AxiosMockAdapter(axios);
 
@@ -78,9 +94,12 @@ describe("RestaurantDetailsPage tests", () => {
     test("renders one restaurant without crashing for regular user", async () => {
         setupUserOnly();
         const queryClient = new QueryClient();
-        axiosMock
-            .onGet("/api/restaurants")
-            .reply(200, restaurantFixtures.oneRestaurant[0]);
+        axiosMock.onGet("/api/restaurants", { params: { id: 1 } }).reply(200, {
+            id: 1,
+            name: "Name1",
+            description: "Description1",
+            location: "Location1",
+        });
 
         const { getByTestId, queryByTestId } = render(
             <QueryClientProvider client={queryClient}>
@@ -115,9 +134,12 @@ describe("RestaurantDetailsPage tests", () => {
     test("renders one restaurant without crashing for admin user", async () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock
-            .onGet("/api/restaurants")
-            .reply(200, restaurantFixtures.oneRestaurant[0]);
+        axiosMock.onGet("/api/restaurants", { params: { id: 1 } }).reply(200, {
+            id: 1,
+            name: "Name1",
+            description: "Description1",
+            location: "Location1",
+        });
 
         const { getByTestId, queryByTestId } = render(
             <QueryClientProvider client={queryClient}>
