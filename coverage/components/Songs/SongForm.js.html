@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -158,46 +158,7 @@
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
 <a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a>
-<a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -208,6 +169,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -286,60 +253,47 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react'
-import { Button, Form } from 'react-bootstrap';
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
+import { Button, Form } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 &nbsp;
-&nbsp;
-function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
-&nbsp;
-    const navigate = useNavigate();
-    
+function SongForm({ initialSong, submitAction, buttonLabel = "Create" }) {
     // Stryker disable all
     const {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm(
-        { defaultValues: initialContents || {}, }
-    );
+    } = useForm({ defaultValues: initialSong || {} });
     // Stryker enable all
-   
-    const testIdPrefix = "SongForm";
+&nbsp;
+    const navigate = useNavigate();
 &nbsp;
     return (
-&nbsp;
         &lt;Form onSubmit={handleSubmit(submitAction)}&gt;
-&nbsp;
-            {initialContents &amp;&amp; (
-                &lt;Form.Group className="mb-3" &gt;
+            {initialSong &amp;&amp; (
+                &lt;Form.Group className="mb-3"&gt;
                     &lt;Form.Label htmlFor="id"&gt;Id&lt;/Form.Label&gt;
                     &lt;Form.Control
-                        data-testid={testIdPrefix + "-id"}
+                        data-testid="SongForm-id"
                         id="id"
                         type="text"
                         {...register("id")}
-                        value={initialContents.id}
+                        value={initialSong.id}
                         disabled
                     /&gt;
                 &lt;/Form.Group&gt;
             )}
 &nbsp;
-            &lt;Form.Group className="mb-3" &gt;
+            &lt;Form.Group className="mb-3"&gt;
                 &lt;Form.Label htmlFor="title"&gt;Title&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-title"}
+                    data-testid="SongForm-title"
                     id="title"
                     type="text"
                     isInvalid={Boolean(errors.title)}
                     {...register("title", {
                         required: "Title is required.",
-                        maxLength : {
-                            value: 30,
-                            message: "Max length 30 characters"
-                        }
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
@@ -347,15 +301,15 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3" &gt;
+            &lt;Form.Group className="mb-3"&gt;
                 &lt;Form.Label htmlFor="artist"&gt;Artist&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-artist"}
+                    data-testid="SongForm-artist"
                     id="artist"
                     type="text"
                     isInvalid={Boolean(errors.artist)}
                     {...register("artist", {
-                        required: "Artist is required."
+                        required: "Artist is required.",
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
@@ -363,15 +317,15 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-            &lt;Form.Group className="mb-3" &gt;
+            &lt;Form.Group className="mb-3"&gt;
                 &lt;Form.Label htmlFor="album"&gt;Album&lt;/Form.Label&gt;
                 &lt;Form.Control
-                    data-testid={testIdPrefix + "-album"}
+                    data-testid="SongForm-album"
                     id="album"
                     type="text"
                     isInvalid={Boolean(errors.album)}
                     {...register("album", {
-                        //required: "Album is required."
+                        required: "Album is required.",
                     })}
                 /&gt;
                 &lt;Form.Control.Feedback type="invalid"&gt;
@@ -379,34 +333,29 @@ function SongForm({ initialContents, submitAction, buttonLabel = "Create" }) {
                 &lt;/Form.Control.Feedback&gt;
             &lt;/Form.Group&gt;
 &nbsp;
-&nbsp;
-            &lt;Button
-                type="submit"
-                data-testid={testIdPrefix + "-submit"}
-            &gt;
+            &lt;Button type="submit" data-testid="SongForm-submit"&gt;
                 {buttonLabel}
             &lt;/Button&gt;
             &lt;Button
                 variant="Secondary"
                 onClick={() =&gt; navigate(-1)}
-                data-testid={testIdPrefix + "-cancel"}
+                data-testid="SongForm-cancel"
             &gt;
                 Cancel
             &lt;/Button&gt;
-&nbsp;
         &lt;/Form&gt;
-&nbsp;
-    )
+    );
 }
 &nbsp;
-export default SongForm;</pre></td></tr></table></pre>
+export default SongForm;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Mon May 22 2023 14:59:20 GMT-0700 (Pacific Daylight Time)
+                at Mon May 22 2023 15:41:09 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
