@@ -21,6 +21,11 @@ import RestaurantCreatePage from "main/pages/Restaurants/RestaurantCreatePage";
 import RestaurantEditPage from "main/pages/Restaurants/RestaurantEditPage";
 import RestaurantDetailsPage from "main/pages/Restaurants/RestaurantDetailsPage";
 
+import MovieIndexPage from "main/pages/Movies/MovieIndexPage";
+import MovieCreatePage from "main/pages/Movies/MovieCreatePage";
+import MovieEditPage from "main/pages/Movies/MovieEditPage";
+import MovieDetailsPage from "main/pages/Movies/MovieDetailsPage";
+
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -138,6 +143,35 @@ function App() {
                             exact
                             path="/restaurants/details/:id"
                             element={<RestaurantDetailsPage />}
+                        />
+                    </>
+                )}
+
+                {hasRole(currentUser, "ROLE_USER") && (
+                    <>
+                        <Route
+                            exact
+                            path="/movies/list"
+                            element={<MovieIndexPage />}
+                        />
+                    </>
+                )}
+                {hasRole(currentUser, "ROLE_ADMIN") && (
+                    <>
+                        <Route
+                            exact
+                            path="/movies/edit/:id"
+                            element={<MovieEditPage />}
+                        />
+                        <Route
+                            exact
+                            path="/movies/create"
+                            element={<MovieCreatePage />}
+                        />
+                        <Route
+                            exact
+                            path="/movies/details/:id"
+                            element={<MovieDetailsPage />}
                         />
                     </>
                 )}
